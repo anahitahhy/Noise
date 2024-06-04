@@ -1,28 +1,30 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import cv2
+import numpy as np
 
-img=cv2.imread("ari.jpg",0)
-def add_salt_and_pepper_noise(image, imp_noise =0.25):
-    imp_noise=np.zeros((640,480),dtype=np.uint8)
-    cv2.randu(imp_noise,0,255)
-    imp_noise=cv2.threshold(imp_noise,245,255,cv2.THRESH_BINARY)[1]
-    in_img= cv2.add(img,imp_noise)
-    return in_img
 
-fig=plt.figure(dpi=300)
+img = cv2.imread('gu.png',0)
+img=img/225
 
-fig.add_subplot(1,3,1)
-plt.imshow(img,cmap='gray')
-plt.axis("off")
-plt.title("Original")
+cv2.imshow('original',img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
-fig.add_subplot(1,3,2)
-plt.imshow(imp_noise,cmap='gray')
-plt.axis("off")
-plt.title("Impulse Noise")
+x,y=img.shape
+g= np.zeros((x,y), dtype = np.float32)
 
-fig.add_subplot(1,3,3)
-plt.imshow(in_img,cmap='gray')
-plt.axis("off")
-plt.title("Combined")
+pepper = 0.25
+salt = 1 - pepper
+for i in range(x):
+    for j in range(y):
+        rdn = np.random.random()
+        if rdn < pepper:
+            g[i][j] = 0
+        elif rdn > salt:
+            g[i][j] = 1
+        else:
+            g[i][j] = img[i][j]
+cv2.imshow('imag_noise', g)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+from skimage import img_as_ubyte
+cv2.imwrite('50%.jpg', img_as_ubyte(g))
