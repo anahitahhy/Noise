@@ -27,4 +27,4 @@ cv2.imshow('imag_noise', g)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 from skimage import img_as_ubyte
-cv2.imwrite('50%.jpg', img_as_ubyte(g))
+cv2.imwrite('25%.jpg', img_as_ubyte(g))
