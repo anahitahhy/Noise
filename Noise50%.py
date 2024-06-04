@@ -2,27 +2,29 @@ import cv2
 import numpy as np
 
 
-img = cv2.imread('bild.jpg', cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('gu.png',0)
+img=img/225
 
+cv2.imshow('original',img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
-rader, kolumner = img.shape
+x,y=img.shape
+g= np.zeros((x,y), dtype = np.float32)
 
-brus_indices = np.random.choice(rader * kolumner, int(0.5 * rader * kolumner), replace=False)
-
-
-brus = np.random.choice([0, 255], int(0.1 * rader * kolumner))
-
-
-img_brus = img.copy()
-img_brus.flat[brus_indices] = brus
-
-
-img_brus = img_brus / 255.0
-
-img_brus[img_brus < 0.05] = 0
-img_brus[img_brus > 0.95] = 1
-
-
-img_brus = (img_brus * 255).astype(np.uint8)
-
-cv2.imwrite('brusig_bild.jpg', img_brus)
+pepper = 0.5
+salt = 1 - pepper
+for i in range(x):
+    for j in range(y):
+        rdn = np.random.random()
+        if rdn < pepper:
+            g[i][j] = 0
+        elif rdn > salt:
+            g[i][j] = 1
+        else:
+            g[i][j] = img[i][j]
+cv2.imshow('imag_noise', g)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+from skimage import img_as_ubyte
+cv2.imwrite('50%.jpg', img_as_ubyte(g))
